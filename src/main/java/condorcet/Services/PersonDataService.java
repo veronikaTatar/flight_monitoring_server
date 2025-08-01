@@ -26,13 +26,13 @@ public class PersonDataService implements Service<PersonData> {
                 passenger.getFlight().setAircraft(null);
             }*/
         }
-        for (User user : entity.getUsers()) {
+       /* for (User user : entity.getUsers()) {
             if (user.getPersonData() != null) {
                 user.getPersonData().setUsers(null);
                 user.getPersonData().setPassengers(null);
             }
             user.setUserMarks(null);
-        }
+        }*/
         return entity;
     }
 

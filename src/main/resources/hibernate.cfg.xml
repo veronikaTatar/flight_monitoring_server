@@ -33,13 +33,13 @@
 
 <!-- Для явного указания классов-сущностей, которые Hibernate должен обрабатывать. Однако при использовании JPA-аннотаций-->
 
-        <mapping class="condorcet.Models.Entities.Flight" />
+<!--        <mapping class="condorcet.Models.Entities.Flight" />-->
         <mapping class="condorcet.Models.Entities.User" />
-        <mapping class="condorcet.Models.Entities.UserMark" />
+<!--        <mapping class="condorcet.Models.Entities.UserMark" />-->
         <mapping class="condorcet.Models.Entities.Passenger" />
         <mapping class="condorcet.Models.Entities.PersonData" />
-        <mapping class="condorcet.Models.Entities.Aircraft" />
-        <mapping class="condorcet.Models.Entities.Route" />
+<!--        <mapping class="condorcet.Models.Entities.Aircraft" />
+        <mapping class="condorcet.Models.Entities.Route" />-->
 
     </session-factory>
 

@@ -1,3 +1,4 @@
+/*
 package condorcet.Models.Entities;
 
 import javax.persistence.*;
@@ -64,4 +65,4 @@ public class UserMark implements Comparable<UserMark> {
     public int compareTo(UserMark o) {
         return Integer.compare(this.mark, o.mark);
     }
-}
+}*/

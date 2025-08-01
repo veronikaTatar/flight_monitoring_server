@@ -6,7 +6,7 @@ import condorcet.Interfaces.Service;
 import condorcet.Models.Entities.Passenger;
 import condorcet.Models.Entities.PersonData;
 import condorcet.Models.Entities.User;
-import condorcet.Models.Entities.UserMark;
+
 
 import java.util.List;
 
@@ -24,10 +24,10 @@ public class UserService implements Service<User> {
             }
             entity.getPersonData().setUsers(null);
         }
-        for (UserMark userMark : entity.getUserMarks()) {
-           /* userMark.getFlight().setUserMarks(null);
+          /*  for (UserMark userMark : entity.getUserMarks()) {
+        userMark.getFlight().setUserMarks(null);
             userMark.getFlight().setRoute(null);
-            userMark.getFlight().setAircraft(null);*/
+            userMark.getFlight().setAircraft(null);
             User tempUser = new User();
             tempUser.setId(userMark.getUser().getId());
             tempUser.setPassword(userMark.getUser().getPassword());
@@ -35,7 +35,7 @@ public class UserService implements Service<User> {
             tempUser.setLogin(userMark.getUser().getLogin());
             tempUser.setRole(userMark.getUser().getRole());
             userMark.setUser(tempUser);
-        }
+        }*/
         return entity;
     }
 

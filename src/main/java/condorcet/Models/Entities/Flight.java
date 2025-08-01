@@ -1,3 +1,4 @@
+/*
 package condorcet.Models.Entities;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ public class Flight {
     private Route route;
 private Aircraft aircraft;
     private Set<Passenger> passengers = new HashSet<>();
-    private Set<UserMark> userMarks = new HashSet<>();
+
 
     public Flight() {
     }
@@ -73,12 +74,4 @@ private Aircraft aircraft;
         this.passengers = passengers;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "flight")
-    public Set<UserMark> getUserMarks() {
-        return userMarks;
-    }
-
-    public void setUserMarks(Set<UserMark> userMarks) {
-        this.userMarks = userMarks;
-    }
-}
+}*/

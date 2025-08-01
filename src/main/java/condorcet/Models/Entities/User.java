@@ -1,8 +1,8 @@
 package condorcet.Models.Entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
+
 @Entity
 @Table(name="user")
 public class User {
@@ -12,18 +12,17 @@ public class User {
     private String Password;
     private String Role;
     private PersonData personData;
-    private Set<UserMark> UserMarks = new HashSet<>();
     public User(){
 
     }
-    public User(int id, String name, String login, String password, String role, condorcet.Models.Entities.PersonData personData, Set<UserMark> userMarks) {
+    public User(int id, String name, String login, String password, String role, condorcet.Models.Entities.PersonData personData) {
         Id = id;
         Name = name;
         Login = login;
         Password = password;
         Role = role;
         this.personData = personData;
-        UserMarks = userMarks;
+
     }
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="person_data_id")
@@ -79,12 +78,5 @@ public class User {
     public void setId(int id) {
         Id = id;
     }
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
-    public Set<UserMark> getUserMarks() {
-        return UserMarks;
-    }
 
-    public void setUserMarks(Set<UserMark> userMarks) {
-        UserMarks = userMarks;
-    }
 }

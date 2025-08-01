@@ -65,7 +65,7 @@ public class ClientThread implements Runnable {
                             userService.findAllEntities();
                             User returnUser;
                             returnUser = userService.findEntity(user.getId());
-                            returnUser.setUserMarks(null);
+                            /*returnUser.setUserMarks(null);*/
                             response = new Response(ResponseStatus.OK, "Готово!", gson.toJson(returnUser));
                         } else {
                             response = new Response(ResponseStatus.ERROR, "Такой пользователь уже существует!", "");
