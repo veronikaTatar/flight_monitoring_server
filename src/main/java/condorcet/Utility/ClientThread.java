@@ -83,7 +83,25 @@ public class ClientThread implements Runnable {
                         }
                         break;
                     }
-                    case ADD_FLIGHT:
+                    case   DISPLAY_USER_DATA: {
+                        try {
+                            List<User> users = userService.findAllEntities();
+                            users.forEach(this::cleanUserRelations);
+                            response = new Response(ResponseStatus.OK, "Данные пользователей", gson.toJson(users));
+                        } catch (Exception e) {
+                            response = new Response(ResponseStatus.ERROR, "Ошибка получения данных: " + e.getMessage(), "");
+                        }
+                        break;
+                    }
+
+                    case DELETE_USER: {
+
+                    }
+                    case UPDATE_USER : {
+
+                    }
+                        case ADD_FLIGHT:
+
                        /* Flight flight = gson.fromJson(request.getRequestMessage(), Flight.class);
                         routeService.saveEntity(flight.getRoute());
                         aircraftService.saveEntity(flight.getAircraft());
@@ -153,7 +171,12 @@ public class ClientThread implements Runnable {
             }
         }
     }
-
+    private void cleanUserRelations(User user) {
+        if (user.getPersonData() != null) {
+            user.getPersonData().setUsers(null);
+            user.getPersonData().setPassengers(null);
+        }
+    }
 /*    private List<ResultMark> calcCondorcet() {
         List<ResultMark> result = new ArrayList<>();
         List<Flight> flights = (List<Flight>) flightService.findAllEntities();

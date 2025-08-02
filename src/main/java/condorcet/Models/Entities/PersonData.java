@@ -6,6 +6,7 @@ import java.util.Set;
 @Entity
 @Table(name="person_data")
 public class PersonData {
+
     private int Id;
     private int Age;
     private String Mail;
@@ -25,7 +26,7 @@ public class PersonData {
         Users = users;
         Passengers = passengers;
     }
-    @Column(name="sex",length = 45)
+    @Column(name="sex",length = 1)
     public String getSex() {
         return Sex;
     }
@@ -61,7 +62,7 @@ public class PersonData {
         Age = age;
     }
     @javax.persistence.Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     public int getId() {
         return Id;

@@ -10,5 +10,8 @@ public enum RequestType {
     UPDATE_FLIGHT,
     UPDATE_MARK,
     UPDATE_PASSENGER,
-    CONDORCET
+    CONDORCET,
+    DISPLAY_USER_DATA,
+    DELETE_USER,
+    UPDATE_USER
 }

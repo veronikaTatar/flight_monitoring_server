@@ -1,82 +1,84 @@
 package condorcet.Models.Entities;
 
+import condorcet.Enums.Roles;
 import javax.persistence.*;
 
-
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
-    private int Id;
-    private String Name;
-    private String Login;
-    private String Password;
-    private String Role;
+    private int id;
+    private String name;
+    private String login;
+    private String password;
+    private Roles role;
     private PersonData personData;
-    public User(){
 
-    }
-    public User(int id, String name, String login, String password, String role, condorcet.Models.Entities.PersonData personData) {
-        Id = id;
-        Name = name;
-        Login = login;
-        Password = password;
-        Role = role;
+    public User() {}
+
+    public User(String name, String login, String password, Roles role, PersonData personData) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+        this.role = role;
         this.personData = personData;
-
     }
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="person_data_id")
-    public condorcet.Models.Entities.PersonData getPersonData() {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Рекомендуется для MySQL
+    @Column(name = "id")
+    public int getId() {
+        return id;
+    }
+
+    @Column(name = "name", length = 45, nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    @Column(name = "login", length = 45, unique = true, nullable = false)
+    public String getLogin() {
+        return login;
+    }
+
+    @Column(name = "password", length = 100, nullable = false)  // Увеличена длина для хэша
+    public String getPassword() {
+        return password;
+    }
+
+    @Enumerated(EnumType.STRING)  // Важно для правильного хранения enum
+    @Column(name = "role", nullable = false)
+    public Roles getRole() {
+        return role;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_data_id", nullable = false)
+    public PersonData getPersonData() {
         return personData;
     }
 
-    public void setPersonData(condorcet.Models.Entities.PersonData personData) {
-        this.personData = personData;
-    }
-    @Column(name="role",length = 45)
-    public String getRole() {
-        return Role;
-    }
-
-    public void setRole(String role) {
-        Role = role;
-    }
-    @Column(name="password",length = 45)
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
-    }
-    @Column(name="login",length = 45)
-
-    public String getLogin() {
-        return Login;
-    }
-
-    public void setLogin(String login) {
-        Login = login;
-    }
-    @Column(name="name",length = 45)
-
-    public String getName() {
-        return Name;
+    // Сеттеры
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
-        Name = name;
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
-    public int getId() {
-        return Id;
+        this.name = name;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
+    public void setPersonData(PersonData personData) {
+        this.personData = personData;
+    }
 }

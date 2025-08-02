@@ -16,7 +16,7 @@ public class HibernateSessionFactory {
             try {
                 Configuration configuration = new Configuration().configure();
                // configuration.addAnnotatedClass(Route.class);
-               // configuration.addAnnotatedClass(PersonData.class);
+                configuration.addAnnotatedClass(PersonData.class);
                 configuration.addAnnotatedClass(User.class);
                // configuration.addAnnotatedClass(UserMark.class);
                // configuration.addAnnotatedClass(Passenger.class);
