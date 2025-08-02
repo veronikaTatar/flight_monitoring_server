@@ -45,13 +45,13 @@ public class User {
         return password;
     }
 
-    @Enumerated(EnumType.STRING)  // Важно для правильного хранения enum
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     public Roles getRole() {
         return role;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_data_id", nullable = false)
     public PersonData getPersonData() {
         return personData;

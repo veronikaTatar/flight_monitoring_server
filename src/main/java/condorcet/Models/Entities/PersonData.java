@@ -3,88 +3,94 @@ package condorcet.Models.Entities;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
 @Entity
-@Table(name="person_data")
+@Table(name = "person_data")
 public class PersonData {
 
-    private int Id;
-    private int Age;
-    private String Mail;
-    private String Address;
-    private String Sex;
-    private Set<User> Users = new HashSet<>();
-    private Set<Passenger> Passengers = new HashSet<>();
-    public PersonData(){
+    private int id;
+    private int age;
+    private String mail;
+    private String address;
+    private String sex;
+    private Set<User> users = new HashSet<>();
+    private Set<Passenger> passengers = new HashSet<>();
 
+    public PersonData() {
     }
+
     public PersonData(int id, int age, String mail, String address, String sex, Set<User> users, Set<Passenger> passengers) {
-        Id = id;
-        Age = age;
-        Mail = mail;
-        Address = address;
-        Sex = sex;
-        Users = users;
-        Passengers = passengers;
-    }
-    @Column(name="sex",length = 1)
-    public String getSex() {
-        return Sex;
+        this.id = id;
+        this.age = age;
+        this.mail = mail;
+        this.address = address;
+        this.sex = sex;
+        this.users = users;
+        this.passengers = passengers;
     }
 
-    public void setSex(String sex) {
-        Sex = sex;
-    }
-    @Column(name="address",length = 45)
-
-    public String getAddress() {
-        return Address;
-    }
-
-    public void setAddress(String address) {
-        Address = address;
-    }
-    @Column(name="mail",length = 45)
-
-    public String getMail() {
-        return Mail;
-    }
-
-    public void setMail(String mail) {
-        Mail = mail;
-    }
-    @Column(name="age")
-
-    public int getAge() {
-        return Age;
-    }
-
-    public void setAge(int age) {
-        Age = age;
-    }
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
-    }
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personData")
-    public Set<Passenger> getPassengers() {
-        return Passengers;
+        this.id = id;
     }
 
-    public void setPassengers(Set<Passenger> passengers) {
-        Passengers = passengers;
+    @Column(name = "age")
+    public int getAge() {
+        return age;
     }
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personData")
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Column(name = "mail", length = 45)
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    @Column(name = "address", length = 45)
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Column(name = "sex", length = 1)
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personData")
     public Set<User> getUsers() {
-        return Users;
+        return users;
     }
 
     public void setUsers(Set<User> users) {
-        Users = users;
+        this.users = users;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personData")
+    public Set<Passenger> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(Set<Passenger> passengers) {
+        this.passengers = passengers;
     }
 }

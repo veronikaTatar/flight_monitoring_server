@@ -14,6 +14,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.mysql.cj.conf.PropertyKey.logger;
 
 ///ядро серверной логики, обрабатывающее запросы клиентов через TCP.
 ///Основные функции:
@@ -86,7 +89,7 @@ public class ClientThread implements Runnable {
                     case   DISPLAY_USER_DATA: {
                         try {
                             List<User> users = userService.findAllEntities();
-                            users.forEach(this::cleanUserRelations);
+                            users.forEach(this::cleanUserRelations);// аналогично users.forEach(user -> cleanUserRelations(user));
                             response = new Response(ResponseStatus.OK, "Данные пользователей", gson.toJson(users));
                         } catch (Exception e) {
                             response = new Response(ResponseStatus.ERROR, "Ошибка получения данных: " + e.getMessage(), "");
@@ -95,7 +98,37 @@ public class ClientThread implements Runnable {
                     }
 
                     case DELETE_USER: {
+                        try {
+                            User userToDelete = gson.fromJson(request.getRequestMessage(), User.class);
+                            User user = userService.findEntity(userToDelete.getId());
 
+                            if (user == null) {
+                                response = new Response(ResponseStatus.ERROR, "Пользователь не найден", "");
+                                break;
+                            }
+
+                            PersonData personData = user.getPersonData();
+                            userService.deleteEntity(user); // Удаляем пользователя
+
+                            // Проверяем, есть ли другие пользователи с этими PersonData
+                            List<User> usersWithSamePersonData = userService.findAllEntities().stream()
+                                    .filter(u -> u.getPersonData() != null && u.getPersonData().getId() == personData.getId())
+                                    .collect(Collectors.toList());
+
+                            if (usersWithSamePersonData.isEmpty()) {
+                                // Проверяем, существует ли PersonData
+                                PersonData pdFromDb = personDataService.findEntity(personData.getId());
+                                if (pdFromDb != null) {
+                                    personDataService.deleteEntity(pdFromDb); // Удаляем, только если существует
+                                }
+                            }
+
+                            response = new Response(ResponseStatus.OK, "Пользователь успешно удален", "");
+                        } catch (Exception e) {
+                            System.out.println("Ошибка при удалении пользователя: " + e.getMessage());
+                            response = new Response(ResponseStatus.ERROR, "Ошибка удаления: " + e.getMessage(), "");
+                        }
+                        break;
                     }
                     case UPDATE_USER : {
 
