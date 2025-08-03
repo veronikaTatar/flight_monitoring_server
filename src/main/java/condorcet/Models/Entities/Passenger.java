@@ -7,16 +7,14 @@ import javax.persistence.*;
 public class Passenger {
    private int id;
     private int placeNumber;
-   // private Flight flight;
     private PersonData personData;
 
     public Passenger() {
     }
 
-    public Passenger(int id, int placeNumber, /*Flight flight,*/ PersonData personData) {
+    public Passenger(int id, int placeNumber,PersonData personData) {
         this.id = id;
         this.placeNumber = placeNumber;
-       // this.flight = flight;
         this.personData = personData;
     }
 
@@ -39,16 +37,6 @@ public class Passenger {
     public void setPlaceNumber(int placeNumber) {
         this.placeNumber = placeNumber;
     }
-
-    /*@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "flight_id")
-    public Flight getFlight() {
-        return flight;
-    }
-
-    public void setFlight(Flight flight) {
-        this.flight = flight;
-    }*/
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_data_id")

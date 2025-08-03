@@ -36,12 +36,9 @@ public class ClientThread implements Runnable {
 
 
     private UserService userService = new UserService();
-   // private FlightService flightService = new FlightService();
   //  private PassengerService passengerService = new PassengerService();
     private PersonDataService personDataService = new PersonDataService();
-  //  private RouteService routeService = new RouteService();
-  //  private UserMarkService userMarkService = new UserMarkService();
-   // private AircraftService aircraftService = new AircraftService();
+
 
     public ClientThread(Socket clientSocket) throws IOException {
         response = new Response();
@@ -68,7 +65,6 @@ public class ClientThread implements Runnable {
                             userService.findAllEntities();
                             User returnUser;
                             returnUser = userService.findEntity(user.getId());
-                            /*returnUser.setUserMarks(null);*/
                             response = new Response(ResponseStatus.OK, "Готово!", gson.toJson(returnUser));
                         } else {
                             response = new Response(ResponseStatus.ERROR, "Такой пользователь уже существует!", "");
@@ -86,7 +82,7 @@ public class ClientThread implements Runnable {
                         }
                         break;
                     }
-                    case   DISPLAY_USER_DATA: {
+                    case DISPLAY_USER_DATA: {
                         try {
                             List<User> users = userService.findAllEntities();
                             users.forEach(this::cleanUserRelations);// аналогично users.forEach(user -> cleanUserRelations(user));
@@ -185,32 +181,7 @@ public class ClientThread implements Runnable {
                         }
                         break;
                     }
-                    case UPDATE_FLIGHT:
-                        /*flight = gson.fromJson(request.getRequestMessage(), Flight.class);
-                        routeService.updateEntity(flight.getRoute());
-                        aircraftService.updateEntity(flight.getAircraft());
-                        flightService.updateEntity(flight);
-                        response = new Response(ResponseStatus.OK, "Готово!", "");
-                        break;*/
-                    case UPDATE_MARK:
-                   /*     UserMark mark = gson.fromJson(request.getRequestMessage(), UserMark.class);
-                        userMarkService.updateEntity(mark);
-                        response = new Response(ResponseStatus.OK, "Готово!", "");
-                        break;*/
-                    case UPDATE_PASSENGER:
-                    /*    Passenger passenger = gson.fromJson(request.getRequestMessage(), Passenger.class);
-                        List<Passenger> passengers = passengerService.findAllEntities();
-                        if (passengers.stream().anyMatch(x -> x.getPlaceNumber() == passenger.getPlaceNumber() && x.getId() != passenger.getId() && x.getFlight().getId()== passenger.getFlight().getId())) {
-                            response = new Response(ResponseStatus.ERROR, "Это место уже занято!", "");
-                            break;
-                        }
-                        passengerService.updateEntity(passenger);
-                        response = new Response(ResponseStatus.OK, "Готово!", "");
-                        break;
-                    case CONDORCET:
-                        result = calcCondorcet();
-                        response = new Response(ResponseStatus.OK, "Готово!", gson.toJson(result));
-                        break;*/
+
                 }
                 out.println(gson.toJson(response));
                 out.flush();
@@ -235,58 +206,5 @@ public class ClientThread implements Runnable {
             user.getPersonData().setPassengers(null);
         }
     }
-/*    private List<ResultMark> calcCondorcet() {
-        List<ResultMark> result = new ArrayList<>();
-        List<Flight> flights = (List<Flight>) flightService.findAllEntities();
-        for (Flight flight :
-                flights) {
-            result.add(new ResultMark(0, flight));
-        }
-        List<User> users = (List<User>) userService.findAllEntities();
-        for (User user :
-                users) {
-            Set<UserMark> tempUserMarks = (Set<UserMark>) user.getUserMarks();
-            if (tempUserMarks.size() != 0) {
-                List<UserMark> userMarks = new ArrayList<>();
-                Map<UserMark, Integer> userMarksValue = new HashMap<>();
-                for (UserMark usermark :
-                        tempUserMarks) {
-                    userMarks.add(usermark);
-                }
-                Collections.sort(userMarks);
-                for (UserMark userMark :
-                        userMarks) {
-                    userMarksValue.put(userMark, 0);
-                }
-                int equalMarks = 0;
-                for (int i = 0; i < userMarks.size() - 1; i++) {
-                    if (userMarks.get(i).getMark() == userMarks.get(i + 1).getMark())
-                        equalMarks++;
-                }
-                int i = userMarks.size() - equalMarks;
-                for (int j = 0; j < userMarks.size() - 1; j++) {
-                    if (userMarks.get(j).getMark() == userMarks.get(j + 1).getMark())
-                        userMarksValue.replace(userMarks.get(j), i - 1);
-                    userMarksValue.replace(userMarks.get(j), i);
-                    i--;
-                }
-                for (ResultMark resultMark :
-                        result) {
-                    Optional<UserMark> foundUserMark = userMarks.stream().filter(x -> x.getFlight().getId() == resultMark.getFlight().getId()).findFirst();
-                    if (foundUserMark.isPresent()) {
-                        resultMark.setPositionValue(resultMark.getPositionValue() + userMarksValue.get(foundUserMark.get()));
-                        resultMark.setAverageMark(resultMark.getAverageMark() + foundUserMark.get().getMark());
-                    }
-                }
-            }
 
-        }
-        for (ResultMark resultMark :
-                result) {
-            resultMark.setAverageMark(resultMark.getAverageMark() / users.size());
-        }
-        Collections.sort(result);
-
-        return result;
-    }*/
 }
