@@ -13,5 +13,6 @@ public enum RequestType {
     CONDORCET,
     DISPLAY_USER_DATA,
     DELETE_USER,
-    UPDATE_USER
+    UPDATE_USER,
+    GET_USER_BY_ID
 }

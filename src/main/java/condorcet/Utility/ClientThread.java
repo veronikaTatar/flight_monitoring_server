@@ -130,36 +130,61 @@ public class ClientThread implements Runnable {
                         }
                         break;
                     }
-                    case UPDATE_USER : {
+                    case UPDATE_USER: {
+                        try {
+                            User updatedUser = gson.fromJson(request.getRequestMessage(), User.class);
+                            User existingUser = userService.findEntity(updatedUser.getId());
 
-                    }
-                        case ADD_FLIGHT:
+                            if (existingUser == null) {
+                                response = new Response(ResponseStatus.ERROR, "Пользователь не найден", "");
+                                break;
+                            }
 
-                       /* Flight flight = gson.fromJson(request.getRequestMessage(), Flight.class);
-                        routeService.saveEntity(flight.getRoute());
-                        aircraftService.saveEntity(flight.getAircraft());
-                        flightService.saveEntity(flight);
-                        response = new Response(ResponseStatus.OK, "Готово!", "");
-                        break;*/
-                    case DELETE_FLIGHT:
-                        /*flight = gson.fromJson(request.getRequestMessage(), Flight.class);
-                        flightService.deleteEntity(flight);
-                        response = new Response(ResponseStatus.OK, "Готово!", "");
-                        break;*/
-                    case GET_FLIGHT:
-                        /*flight = gson.fromJson(request.getRequestMessage(), Flight.class);
-                        flight = flightService.findEntity(flight.getId());
-                        response = new Response(ResponseStatus.OK, "Готово!", gson.toJson(flight));
-                        break;*/
-                    case GETALL_FLIGHT:
-                        /*List<Flight> flights = new ArrayList<>();
-                        List<ResultMark> result = calcCondorcet();
-                        for (ResultMark resultMark :
-                                result) {
-                            flights.add(resultMark.getFlight());
+                            // Обновление PersonData
+                            if (existingUser.getPersonData() == null) {
+                                response = new Response(ResponseStatus.ERROR, "У пользователя нет PersonData", "");
+                                break;
+                            }
+
+                            // Сохраняем ID существующей PersonData
+                            updatedUser.getPersonData().setId(existingUser.getPersonData().getId());
+
+                            // Обновляем PersonData
+                            personDataService.updateEntity(updatedUser.getPersonData());
+
+                            // Обновляем User (кроме пароля, если он не был изменен)
+                            if (updatedUser.getPassword() == null || updatedUser.getPassword().isEmpty()) {
+                                updatedUser.setPassword(existingUser.getPassword());
+                            }
+
+                            userService.updateEntity(updatedUser);
+
+                            // Возвращаем обновленные данные
+                            User cleanUser = userService.findEntity(updatedUser.getId());
+                            cleanUserRelations(cleanUser); // Очищаем связи, если необходимо
+
+                            response = new Response(ResponseStatus.OK, "Данные обновлены", gson.toJson(cleanUser));
+                        } catch (Exception e) {
+                            response = new Response(ResponseStatus.ERROR, "Ошибка обновления: " + e.getMessage(), "");
                         }
-                        response = new Response(ResponseStatus.OK, "Готово!", gson.toJson(flights));
-                        break;*/
+                        break;
+                    }
+                    case GET_USER_BY_ID: {
+                        try {
+                            int userId = Integer.parseInt(request.getRequestMessage());
+                            User user = userService.findEntity(userId);
+
+                            if (user != null) {
+                                cleanUserRelations(user); // Очистите связи при необходимости
+                                response = new Response(ResponseStatus.OK, "", gson.toJson(user));
+                            } else {
+                                response = new Response(ResponseStatus.ERROR, "Пользователь не найден", "");
+                            }
+                        } catch (Exception e) {
+                            response = new Response(ResponseStatus.ERROR, "Ошибка: " + e.getMessage(), "");
+                        }
+                        break;
+                    }
                     case UPDATE_FLIGHT:
                         /*flight = gson.fromJson(request.getRequestMessage(), Flight.class);
                         routeService.updateEntity(flight.getRoute());
